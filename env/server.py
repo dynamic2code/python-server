@@ -1,8 +1,11 @@
 #standard libs
 import socket
+import os
 
 # modules
-
+import file_searcher
+import config_parser
+import find_file
 class Server:
     def __init__(self) -> None:
 
@@ -13,15 +16,29 @@ class Server:
 
 
     def handle_connection(self,client_socket):
+        """
+        """
         # Receive the data from the client
         self.data = client_socket.recv(1024).decode("utf-8")
         print("Received data:", self.data)
 
-        # Process the received string (you can add your logic here)
-        # ...
+        #get file path of the txt file
+        config_file = find_file.search_file("config_file.conf")
 
+        file_path_from_config = config_parser.extract_linux_path(config_file)
+        print(file_path_from_config)
+        file_name = os.path.basename(file_path_from_config)
+
+        file_path = find_file.search_file(file_name)
+        print(file_path)
+         
         # Send a response back to the client
-        response = "Response from server"
+        if file_searcher.linear_search_string(file_path,self.data):
+            response = "STRING EXISTS"
+        else:
+            response = "STRING NOT FOUND"
+       
+        
         client_socket.send(response.encode("utf-8"))
 
         # Close the connection
@@ -30,7 +47,6 @@ class Server:
     def start_server(self):
         # Create a TCP socket
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 
         # Bind the socket to the host and port
         server_socket.bind((self.HOST, self.PORT))

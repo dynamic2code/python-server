@@ -1,5 +1,8 @@
-class File_search:
-    def __init__(self) -> None:
-        pass
-    def search(self):
-        pass
+def linear_search_string(file_path, search_string):
+    with open(file_path, 'r') as file:
+        for line in file:
+            if search_string in line:
+                return True
+    
+    return False
+        

@@ -8,19 +8,6 @@ class Client:
         self.port = port
 
     def get_search_string(self):
-        """
-        Gets the user input.
-
-        recieves the string to be searched from the user and checks if it is a valid input.
-
-        :client_input: holds the user input.
-        :type client_input: Type of arg1
-        :search_string: holds the string after validation.
-        :type search_string: Str
-        :return: Description of the return value.
-        :rtype: Type of the return value
-        :raises SpecificException: Description of the raised exception(s), if any.
-        """
         client_input = input("Enter the string you wish to search: ")
 
         if string_verifier.validate_string(client_input)[0] == False:
