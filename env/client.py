@@ -1,5 +1,7 @@
 import socket
 
+import string_verifier
+
 class Client:
     def __init__(self, host, port):
         self.host = host
@@ -20,9 +22,13 @@ class Client:
         :raises SpecificException: Description of the raised exception(s), if any.
         """
         client_input = input("Enter the string you wish to search: ")
-        search_string = client_input
 
-        return search_string
+        if string_verifier.validate_string(client_input)[0] == False:
+            print(string_verifier.validate_string(client_input)[1])
+        elif string_verifier.validate_string(client_input):
+            print(string_verifier.validate_string(client_input)[1])
+            search_string = client_input
+            return search_string
 
 
     def send_message(self):
@@ -56,6 +62,9 @@ class Client:
                 response = client_socket.recv(1024).decode("utf-8")
                 print("Response from server:", response)
 
+            except OSError:
+                print("try again")
+
             finally:
                 # Close the socket
                 client_socket.close()
@@ -63,7 +72,5 @@ class Client:
 if __name__ == "__main__":
     # Create a Client instance with the server's host and port
     client = Client("127.0.0.1", 1234)
-
     # Send a message to the server
-    
     client.send_message()
