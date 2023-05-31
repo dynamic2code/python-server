@@ -20,6 +20,7 @@ class Server:
         self.response = ""
         self.REREAD_ON_QUERY = False
         self.SSLAUTHENTICATION = False
+        self.execution_time = 0
         # Configuration of the logging
         logging.basicConfig(filename='server.log', encoding='utf-8', level=logging.DEBUG)
 
@@ -79,8 +80,8 @@ class Server:
 
             end_time = time.time()
 
-            execution_time = end_time - start_time
-            logging.debug("Execution time: {:.2f} seconds \n Received data:{}\n Received data at:{}".format(execution_time, self.data, datetime.now().time()))
+            self.execution_time = end_time - start_time
+            # logging.debug("Execution time: {:.2f} seconds \n Received data:{}\n Received data at:{}".format(execution_time, self.data, datetime.now().time()))
             
 
     def start_server(self):
@@ -102,8 +103,10 @@ class Server:
             # Handle each connection in a separate thread
             thread = threading.Thread(target=self.handle_connection, args=(client_socket,))
             thread.start()
-
+            
+            logging.debug("Connection from:{}\nExecution time: {:.2f} seconds \nReceived data:{} \nReceived data at:{}".format(client_address, self.execution_time, self.data, datetime.now().time()))
             # logging.debug("Connection from:", client_address)
+            # 
 
 if __name__ == "__main__":
     obj = Server()

@@ -7,6 +7,7 @@ class Client:
         self.host = "127.0.0.1"
         self.port = 1234
         self.SSLAUTHENTICATION = False
+        
 
     def get_search_string(self):
         client_input = input("Enter the string you wish to search: ")

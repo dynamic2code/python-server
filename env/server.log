@@ -38,3 +38,16 @@ DEBUG:root:Execution time: 4.62 seconds
 DEBUG:root:Execution time: 14.47 seconds 
  Received data:s
  Received data at:22:18:23.947244
+DEBUG:root:Execution time: 256.19 seconds 
+ Received data:exit
+ Received data at:22:22:40.138154
+DEBUG:root:Execution time: 2.82 seconds 
+ Received data:
+ Received data at:22:22:42.954793
+DEBUG:root:Connection from:('127.0.0.1', 34510) 
+Received data: 
+Received data at:23:07:52.675995
+DEBUG:root:Connection from:('127.0.0.1', 57458)
+Execution time: 0.00 seconds 
+Received data: 
+Received data at:23:16:41.470582
