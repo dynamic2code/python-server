@@ -18,6 +18,7 @@ class Server:
         self.HOST = "127.0.0.1"
         self.PORT = 1234
         self.response = ""
+        self.REREAD_ON_QUERY = False
         # Configuration of the logging
         logging.basicConfig(filename='server.log', encoding='utf-8', level=logging.DEBUG)
 
@@ -28,34 +29,52 @@ class Server:
         """
         # Capture the start time
         start_time = time.time()
-        # Receive the data from the client
-        self.data = client_socket.recv(1024).decode("utf-8")
+        # Receive the data of max payload of 1024 from the client
+        client_string = client_socket.recv(1024)
+        self.data = client_string.rstrip(b'\x00').decode("utf-8")
         logging.debug("Received data:", self.data)
         logging.debug("Received data at:", datetime.now().time())
-      
 
-        #get file path of the txt file
-        config_file = find_file.search_file("config_file.conf")
+        # re-reads file if REREAD_ON_QUERY is set to true else just reads ones 
+        while self.REREAD_ON_QUERY:
+            #get file path of the txt file
+            config_file = find_file.search_file("config_file.conf")
+            file_path_from_config = config_parser.extract_linux_path(config_file)
 
-        file_path_from_config = config_parser.extract_linux_path(config_file)
+            # file name of the txt file 
+            file_name = os.path.basename(file_path_from_config)
 
-        # file name of the txt file 
-        file_name = os.path.basename(file_path_from_config)
+            #full path of the txt file
+            file_path = find_file.search_file(file_name)
+                
+            # Send a response back to the client
+            if file_searcher.linear_search_string(file_path,self.data):
+                response = "STRING EXISTS \n"
+            else:
+                response = "STRING NOT FOUND \n"
+            
+            client_socket.send(response.encode("utf-8"))
 
-        #full path of the txt file
-        file_path = find_file.search_file(file_name)
-        
-         
-        # Send a response back to the client
-        if file_searcher.linear_search_string(file_path,self.data):
-            response = "STRING EXISTS \n"
         else:
-            response = "STRING NOT FOUND \n"
-       
-        
-        client_socket.send(response.encode("utf-8"))
+            #get file path of the txt file
+            config_file = find_file.search_file("config_file.conf")
+            file_path_from_config = config_parser.extract_linux_path(config_file)
 
-        # Close the connection
+            # file name of the txt file 
+            file_name = os.path.basename(file_path_from_config)
+
+            #full path of the txt file
+            file_path = find_file.search_file(file_name)
+                
+            # Send a response back to the client
+            if file_searcher.linear_search_string(file_path,self.data):
+                response = "STRING EXISTS \n"
+            else:
+                response = "STRING NOT FOUND \n"
+            
+            client_socket.send(response.encode("utf-8"))
+
+        # Close the client-server connection
         client_socket.close()
 
         end_time = time.time()
@@ -81,7 +100,7 @@ class Server:
             client_socket, client_address = server_socket.accept()
             logging.debug("Connection from:", client_address)
             
-            # Handle the connection in a separate thread
+            # Handle each connection in a separate thread
             thread = threading.Thread(target=self.handle_connection, args=(client_socket,))
             thread.start()
 
