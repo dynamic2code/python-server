@@ -19,6 +19,7 @@ class Server:
         self.PORT = 1234
         self.response = ""
         self.REREAD_ON_QUERY = False
+        self.SSLAUTHENTICATION = False
         # Configuration of the logging
         logging.basicConfig(filename='server.log', encoding='utf-8', level=logging.DEBUG)
 
@@ -32,8 +33,6 @@ class Server:
         # Receive the data of max payload of 1024 from the client
         client_string = client_socket.recv(1024)
         self.data = client_string.rstrip(b'\x00').decode("utf-8")
-        logging.debug("Received data:", self.data)
-        logging.debug("Received data at:", datetime.now().time())
 
         # re-reads file if REREAD_ON_QUERY is set to true else just reads ones 
         while self.REREAD_ON_QUERY:
@@ -75,12 +74,12 @@ class Server:
             client_socket.send(response.encode("utf-8"))
 
         # Close the client-server connection
-        client_socket.close()
+        # client_socket.close()
 
         end_time = time.time()
 
         execution_time = end_time - start_time
-        logging.debug("Execution time: {:.2f} seconds".format(execution_time))
+        logging.debug("Execution time: {:.2f} seconds \n Received data:{}\n Received data at:{}".format(execution_time, self.data, datetime.now().time()))
         
 
     def start_server(self):
@@ -98,11 +97,12 @@ class Server:
         while True:
             # Accept a client connection
             client_socket, client_address = server_socket.accept()
-            logging.debug("Connection from:", client_address)
             
             # Handle each connection in a separate thread
             thread = threading.Thread(target=self.handle_connection, args=(client_socket,))
             thread.start()
+
+            # logging.debug("Connection from:", client_address)
 
 if __name__ == "__main__":
     obj = Server()

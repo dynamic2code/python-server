@@ -1,0 +1,16 @@
+DEBUG:root:Execution time: 6.28 seconds
+DEBUG:root:Execution time: 7.19 seconds
+DEBUG:root:Execution time: 7.01 seconds
+DEBUG:root:Execution time: 5.36 seconds
+DEBUG:root:Execution time: 6.09 seconds 
+ Received data:a
+ Received data at:18:27:24.495161
+DEBUG:root:Execution time: 9.76 seconds 
+ Received data:a
+ Received data at:18:30:20.879537
+DEBUG:root:Execution time: 5.87 seconds 
+ Received data:a
+ Received data at:18:33:54.629312
+DEBUG:root:Execution time: 5.10 seconds 
+ Received data:a
+ Received data at:18:45:11.542037

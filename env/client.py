@@ -3,9 +3,10 @@ import socket
 import string_verifier
 
 class Client:
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
+    def __init__(self):
+        self.host = "127.0.0.1"
+        self.port = 1234
+        self.SSLAUTHENTICATION = False
 
     def get_search_string(self):
         client_input = input("Enter the string you wish to search: ")
@@ -49,14 +50,13 @@ class Client:
                 response = client_socket.recv(1024).decode("utf-8")
                 print("Response from server:", response)
 
-                client_socket.close()
-                # # Check if the user wants to exit
-                # if string.lower() == "exit":
-                #     break
+                
+                # Check if the user wants to exit
+                if string.lower() == "exit":
+                    break
 
             except BrokenPipeError:
                 print("Connection closed by the server.")
-
                 # Reconnect to the server
                 client_socket.close()
                 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -69,6 +69,6 @@ class Client:
 
 if __name__ == "__main__":
     # Create a Client instance with the server's host and port
-    client = Client("127.0.0.1", 1234)
+    client = Client()
     # Send a message to the server
     client.send_message()
