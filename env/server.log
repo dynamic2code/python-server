@@ -14,3 +14,27 @@ DEBUG:root:Execution time: 5.87 seconds
 DEBUG:root:Execution time: 5.10 seconds 
  Received data:a
  Received data at:18:45:11.542037
+DEBUG:root:Execution time: 8.09 seconds 
+ Received data:a
+ Received data at:22:05:52.084308
+DEBUG:root:Execution time: 6.10 seconds 
+ Received data:a
+ Received data at:22:09:38.377152
+DEBUG:root:Execution time: 9.60 seconds 
+ Received data:a
+ Received data at:22:11:25.715871
+DEBUG:root:Execution time: 8.90 seconds 
+ Received data:a
+ Received data at:22:12:39.727080
+DEBUG:root:Execution time: 5.93 seconds 
+ Received data:a
+ Received data at:22:14:30.601299
+DEBUG:root:Execution time: 5.52 seconds 
+ Received data:a
+ Received data at:22:18:04.853548
+DEBUG:root:Execution time: 4.62 seconds 
+ Received data:a
+ Received data at:22:18:09.478727
+DEBUG:root:Execution time: 14.47 seconds 
+ Received data:s
+ Received data at:22:18:23.947244

@@ -28,59 +28,60 @@ class Server:
     def handle_connection(self,client_socket):
         """
         """
-        # Capture the start time
-        start_time = time.time()
-        # Receive the data of max payload of 1024 from the client
-        client_string = client_socket.recv(1024)
-        self.data = client_string.rstrip(b'\x00').decode("utf-8")
+        while True:
+            # Capture the start time
+            start_time = time.time()
+            # Receive the data of max payload of 1024 from the client
+            client_string = client_socket.recv(1024)
+            self.data = client_string.rstrip(b'\x00').decode("utf-8")
 
-        # re-reads file if REREAD_ON_QUERY is set to true else just reads ones 
-        while self.REREAD_ON_QUERY:
-            #get file path of the txt file
-            config_file = find_file.search_file("config_file.conf")
-            file_path_from_config = config_parser.extract_linux_path(config_file)
+            # re-reads file if REREAD_ON_QUERY is set to true else just reads ones 
+            while self.REREAD_ON_QUERY:
+                #get file path of the txt file
+                config_file = find_file.search_file("config_file.conf")
+                file_path_from_config = config_parser.extract_linux_path(config_file)
 
-            # file name of the txt file 
-            file_name = os.path.basename(file_path_from_config)
+                # file name of the txt file 
+                file_name = os.path.basename(file_path_from_config)
 
-            #full path of the txt file
-            file_path = find_file.search_file(file_name)
+                #full path of the txt file
+                file_path = find_file.search_file(file_name)
+                    
+                # Send a response back to the client
+                if file_searcher.linear_search_string(file_path,self.data):
+                    response = "STRING EXISTS \n"
+                else:
+                    response = "STRING NOT FOUND \n"
                 
-            # Send a response back to the client
-            if file_searcher.linear_search_string(file_path,self.data):
-                response = "STRING EXISTS \n"
+                client_socket.send(response.encode("utf-8"))
+
             else:
-                response = "STRING NOT FOUND \n"
-            
-            client_socket.send(response.encode("utf-8"))
+                #get file path of the txt file
+                config_file = find_file.search_file("config_file.conf")
+                file_path_from_config = config_parser.extract_linux_path(config_file)
 
-        else:
-            #get file path of the txt file
-            config_file = find_file.search_file("config_file.conf")
-            file_path_from_config = config_parser.extract_linux_path(config_file)
+                # file name of the txt file 
+                file_name = os.path.basename(file_path_from_config)
 
-            # file name of the txt file 
-            file_name = os.path.basename(file_path_from_config)
-
-            #full path of the txt file
-            file_path = find_file.search_file(file_name)
+                #full path of the txt file
+                file_path = find_file.search_file(file_name)
+                    
+                # Send a response back to the client
+                if file_searcher.linear_search_string(file_path,self.data):
+                    response = "STRING EXISTS \n"
+                else:
+                    response = "STRING NOT FOUND \n"
                 
-            # Send a response back to the client
-            if file_searcher.linear_search_string(file_path,self.data):
-                response = "STRING EXISTS \n"
-            else:
-                response = "STRING NOT FOUND \n"
+                client_socket.send(response.encode("utf-8"))
+
+            # Close the client-server connection
+            # client_socket.close()
+
+            end_time = time.time()
+
+            execution_time = end_time - start_time
+            logging.debug("Execution time: {:.2f} seconds \n Received data:{}\n Received data at:{}".format(execution_time, self.data, datetime.now().time()))
             
-            client_socket.send(response.encode("utf-8"))
-
-        # Close the client-server connection
-        # client_socket.close()
-
-        end_time = time.time()
-
-        execution_time = end_time - start_time
-        logging.debug("Execution time: {:.2f} seconds \n Received data:{}\n Received data at:{}".format(execution_time, self.data, datetime.now().time()))
-        
 
     def start_server(self):
         # Create a TCP socket
