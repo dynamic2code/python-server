@@ -2,48 +2,49 @@ import socket
 
 import string_verifier
 
+
 class Client:
     def __init__(self):
         self.host = "127.0.0.1"
         self.port = 1234
-        self.SSLAUTHENTICATION = False
-        
+        self.SSL_AUTHENTICATION = False
 
     def get_search_string(self):
-        client_input = input("Enter the string you wish to search: ")
+        """
+        Prompts the user to enter a search string and validates it.
 
-        if string_verifier.validate_string(client_input)[0] == False:
-            print(string_verifier.validate_string(client_input)[1])
-        elif string_verifier.validate_string(client_input):
-            print(string_verifier.validate_string(client_input)[1])
-            search_string = client_input
-            return search_string
+        :return: The validated search string.
+        :rtype: str
+        """
+        while True:
+            client_input = input("Enter the string you wish to search: ")
 
+            if not string_verifier.validate_string(client_input):
+                print("Invalid input. Please enter a valid string.")
+            else:
+                return client_input
 
     def send_message(self):
         """
-        The function uses the returned search_string and sends it to the server.
+        Sends a search string to the server and receives the response.
 
-        The pourpose of this function is communicating with the server. It sends the string and recieves response.
+        This function communicates with the server by sending the search string
+        and receiving the response.
 
-        :string: the string recieved from the user.
-        :type sttring: Str
-        :response: response from the server.
-        :type response: Type of arg2
-        :return: None.
-        :rtype: None.
-        :raises SpecificException: Description of the raised exception(s), if any.
+        :return: None
+        :rtype: None
         """
         # Create a TCP socket
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        # Connect to the server
-        client_socket.connect((self.host, self.port))
-        print("Enter exit to close connection")
-        while True:
-            string = client.get_search_string()
+        try:
+            # Connect to the server
+            client_socket.connect((self.host, self.port))
+            print("Enter 'exit' to close the connection.")
 
-            try:
+            while True:
+                string = self.get_search_string()
+
                 # Send the message to the server
                 client_socket.send(string.encode("utf-8"))
 
@@ -51,22 +52,19 @@ class Client:
                 response = client_socket.recv(1024).decode("utf-8")
                 print("Response from server:", response)
 
-                
                 # Check if the user wants to exit
                 if string.lower() == "exit":
                     break
 
-            except BrokenPipeError:
-                print("Connection closed by the server.")
-                # Reconnect to the server
-                client_socket.close()
-                client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                client_socket.connect((self.host, self.port))
+        except ConnectionRefusedError:
+            print("Connection refused by the server.")
 
-        # Close the socket
-        # client_socket.close()
+        except ConnectionResetError:
+            print("Connection reset by the server.")
 
-
+        finally:
+            # Close the socket
+            client_socket.close()
 
 if __name__ == "__main__":
     # Create a Client instance with the server's host and port

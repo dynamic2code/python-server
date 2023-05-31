@@ -1,4 +1,12 @@
-def validate_string(input_string:str) -> tuple[bool, str]:
+def validate_string(input_string: str) -> tuple[bool, str]:
+    """
+    Validates the input string and returns a tuple indicating whether the string is valid and an accompanying message.
+
+    :param input_string: The string to be validated.
+    :type input_string: str
+    :return: A tuple containing a boolean indicating if the string is valid and a message describing the result.
+    :rtype: tuple[bool, str]
+    """
     try:
         # Check if the input is already a string
         if not isinstance(input_string, str):
