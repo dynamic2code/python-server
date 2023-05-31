@@ -35,13 +35,13 @@ class Client:
         # Create a TCP socket
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+        # Connect to the server
+        client_socket.connect((self.host, self.port))
+        print("Enter exit to close connection")
         while True:
             string = client.get_search_string()
 
             try:
-                # Connect to the server
-                client_socket.connect((self.host, self.port))
-
                 # Send the message to the server
                 client_socket.send(string.encode("utf-8"))
 
@@ -49,12 +49,23 @@ class Client:
                 response = client_socket.recv(1024).decode("utf-8")
                 print("Response from server:", response)
 
-            except OSError:
-                print("try again")
-
-            finally:
-                # Close the socket
                 client_socket.close()
+                # # Check if the user wants to exit
+                # if string.lower() == "exit":
+                #     break
+
+            except BrokenPipeError:
+                print("Connection closed by the server.")
+
+                # Reconnect to the server
+                client_socket.close()
+                client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                client_socket.connect((self.host, self.port))
+
+        # Close the socket
+        # client_socket.close()
+
+
 
 if __name__ == "__main__":
     # Create a Client instance with the server's host and port
