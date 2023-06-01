@@ -4,6 +4,7 @@ import threading
 from datetime import datetime
 import time
 import logging
+import ssl
 
 import file_searcher
 import config_parser
@@ -21,7 +22,8 @@ class Server:
         self.PORT: int = 1234
         self.response: str = ""
         self.REREAD_ON_QUERY: bool = False
-        self.SSLAUTHENTICATION: bool = False
+        self.SSL_AUTHENTICATION: bool = True
+        self.PSK: str = "my_secret_psk"
         self.execution_time: float = 0
 
         # Configuration of the logging
@@ -107,15 +109,35 @@ class Server:
         print("Server listening on {}:{}".format(self.HOST, self.PORT))
 
         while True:
-            # Accept a client connection
-            client_socket, client_address = server_socket.accept()
+            while self.SSL_AUTHENTICATION:
+                # Accept a client connection
+                client_socket, client_address = server_socket.accept()
 
-            # Handle each connection in a separate thread
-            thread = threading.Thread(target=self.handle_connection, args=(client_socket,))
-            thread.start()
+                # Wrap the socket with SSL
+                ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+                ssl_context.load_cert_chain(certfile="server.crt", keyfile="server.key")
+                ssl_context.load_psk_identity(identity=self.PSK, psk=self.PSK)
+                ssl_socket = ssl_context.wrap_socket(client_socket, server_side=True)
 
-            logging.debug("Connection from: {}\nExecution time: {:.2f} seconds \nReceived data: {} \nReceived data at: {}".format(
-                client_address, self.execution_time, self.data, datetime.now().time()))
+                # Handle each connection in a separate thread
+                thread = threading.Thread(target=self.handle_connection, args=(ssl_socket,))
+                thread.start()
+
+                logging.debug("Connection from: {}\nExecution time: {:.2f} seconds \nReceived data: {} \nReceived data at: {}".format(
+                    client_address, self.execution_time, self.data, datetime.now().time()))
+
+
+
+            else:
+                # Accept a client connection
+                client_socket, client_address = server_socket.accept()
+
+                # Handle each connection in a separate thread
+                thread = threading.Thread(target=self.handle_connection, args=(client_socket,))
+                thread.start()
+
+                logging.debug("Connection from: {}\nExecution time: {:.2f} seconds \nReceived data: {} \nReceived data at: {}".format(
+                    client_address, self.execution_time, self.data, datetime.now().time()))
 
 
 if __name__ == "__main__":

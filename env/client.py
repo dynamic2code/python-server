@@ -1,5 +1,5 @@
 import socket
-
+import ssl
 import string_verifier
 
 
@@ -7,7 +7,8 @@ class Client:
     def __init__(self):
         self.host = "127.0.0.1"
         self.port = 1234
-        self.SSL_AUTHENTICATION = False
+        self.SSL_AUTHENTICATION = True
+        self.PSK = "my_secret_psk"
 
     def get_search_string(self):
         """
@@ -34,37 +35,80 @@ class Client:
         :return: None
         :rtype: None
         """
-        # Create a TCP socket
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        while self.SSL_AUTHENTICATION:
 
-        try:
-            # Connect to the server
-            client_socket.connect((self.host, self.port))
-            print("Enter 'exit' to close the connection.")
+            ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            ssl_context.verify_mode = ssl.CERT_REQUIRED
 
-            while True:
-                string = self.get_search_string()
+            # Set PSK identity and key
+            ssl_context.set_psk_identity("client_identity")
+            ssl_context.set_psk_key(self.PSK.encode("utf-8"))
 
-                # Send the message to the server
-                client_socket.send(string.encode("utf-8"))
+            # Create a TCP socket
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket = ssl_context.wrap_socket(client_socket, server_hostname=self.host)
 
-                # Receive the response from the server
-                response = client_socket.recv(1024).decode("utf-8")
-                print("Response from server:", response)
+            try:
+                # Connect to the server
+                client_socket.connect((self.host, self.port))
+                print("Enter 'exit' to close the connection.")
 
-                # Check if the user wants to exit
-                if string.lower() == "exit":
-                    break
+                while True:
+                    string = self.get_search_string()
 
-        except ConnectionRefusedError:
-            print("Connection refused by the server.")
+                    # Send the message to the server
+                    client_socket.send(string.encode("utf-8"))
 
-        except ConnectionResetError:
-            print("Connection reset by the server.")
+                    # Receive the response from the server
+                    response = client_socket.recv(1024).decode("utf-8")
+                    print("Response from server:", response)
 
-        finally:
-            # Close the socket
-            client_socket.close()
+                    # Check if the user wants to exit
+                    if string.lower() == "exit":
+                        break
+
+            except ConnectionRefusedError:
+                print("Connection refused by the server.")
+
+            except ConnectionResetError:
+                print("Connection reset by the server.")
+
+            finally:
+                # Close the socket
+                client_socket.close()
+
+        else:
+            # Create a TCP socket
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+            try:
+                # Connect to the server
+                client_socket.connect((self.host, self.port))
+                print("Enter 'exit' to close the connection.")
+
+                while True:
+                    string = self.get_search_string()
+
+                    # Send the message to the server
+                    client_socket.send(string.encode("utf-8"))
+
+                    # Receive the response from the server
+                    response = client_socket.recv(1024).decode("utf-8")
+                    print("Response from server:", response)
+
+                    # Check if the user wants to exit
+                    if string.lower() == "exit":
+                        break
+
+            except ConnectionRefusedError:
+                print("Connection refused by the server.")
+
+            except ConnectionResetError:
+                print("Connection reset by the server.")
+
+            finally:
+                # Close the socket
+                client_socket.close()
 
 if __name__ == "__main__":
     # Create a Client instance with the server's host and port

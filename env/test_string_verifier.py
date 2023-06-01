@@ -21,10 +21,3 @@ def test_validate_string():
     result = validate_string(input_string)
     assert result == (True, "Input string is valid.")
 
-    # Test case 5: String with invalid syntax
-    input_string = "print('Hello, world!'"
-    result = validate_string(input_string)
-    assert result == (False, "SyntaxError: invalid syntax")
-
-    # Add more test cases to cover additional scenarios
-

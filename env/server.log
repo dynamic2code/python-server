@@ -65,3 +65,13 @@ Received data at: 23:48:38.493125
 DEBUG:root:Execution time: 4.40 seconds 
 Received data: a
 Received data at: 23:48:42.894335
+DEBUG:root:Connection from: ('127.0.0.1', 52844)
+Execution time: 0.00 seconds 
+Received data:  
+Received data at: 15:51:26.920504
+DEBUG:root:Execution time: 6.24 seconds 
+Received data: a
+Received data at: 15:51:33.160903
+DEBUG:root:Execution time: 17.00 seconds 
+Received data: a
+Received data at: 15:51:50.161207

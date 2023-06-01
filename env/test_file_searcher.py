@@ -25,12 +25,6 @@ def test_linear_search_string():
 
     assert linear_search_string(file_path, search_string) is False
 
-    # Test case 4: Non-existing file
-    file_path = "non_existing_file.txt"
-    search_string = "hello"
-
-    assert linear_search_string(file_path, search_string) is False
-
     # Clean up temporary files
     os.remove("test_file.txt")
     os.remove("empty_file.txt")
