@@ -1,77 +1,76 @@
-DEBUG:root:Execution time: 6.28 seconds
-DEBUG:root:Execution time: 7.19 seconds
-DEBUG:root:Execution time: 7.01 seconds
-DEBUG:root:Execution time: 5.36 seconds
-DEBUG:root:Execution time: 6.09 seconds 
- Received data:a
- Received data at:18:27:24.495161
-DEBUG:root:Execution time: 9.76 seconds 
- Received data:a
- Received data at:18:30:20.879537
-DEBUG:root:Execution time: 5.87 seconds 
- Received data:a
- Received data at:18:33:54.629312
-DEBUG:root:Execution time: 5.10 seconds 
- Received data:a
- Received data at:18:45:11.542037
-DEBUG:root:Execution time: 8.09 seconds 
- Received data:a
- Received data at:22:05:52.084308
-DEBUG:root:Execution time: 6.10 seconds 
- Received data:a
- Received data at:22:09:38.377152
-DEBUG:root:Execution time: 9.60 seconds 
- Received data:a
- Received data at:22:11:25.715871
-DEBUG:root:Execution time: 8.90 seconds 
- Received data:a
- Received data at:22:12:39.727080
-DEBUG:root:Execution time: 5.93 seconds 
- Received data:a
- Received data at:22:14:30.601299
-DEBUG:root:Execution time: 5.52 seconds 
- Received data:a
- Received data at:22:18:04.853548
-DEBUG:root:Execution time: 4.62 seconds 
- Received data:a
- Received data at:22:18:09.478727
-DEBUG:root:Execution time: 14.47 seconds 
- Received data:s
- Received data at:22:18:23.947244
-DEBUG:root:Execution time: 256.19 seconds 
- Received data:exit
- Received data at:22:22:40.138154
-DEBUG:root:Execution time: 2.82 seconds 
- Received data:
- Received data at:22:22:42.954793
-DEBUG:root:Connection from:('127.0.0.1', 34510) 
-Received data: 
-Received data at:23:07:52.675995
-DEBUG:root:Connection from:('127.0.0.1', 57458)
-Execution time: 0.00 seconds 
-Received data: 
-Received data at:23:16:41.470582
-DEBUG:root:Connection from:('127.0.0.1', 58014)
-Execution time: 6.07 seconds 
-Received data:a 
-Received data at:23:32:58.935064
-DEBUG:root:Connection from: ('127.0.0.1', 35650)
+DEBUG:root:Execution time: 0.01 seconds 
+Received data: 12;0;1;28;0;17;4;0;
+Received data at: 12:31:15.991705
+DEBUG:root:Execution time: 0.09 seconds 
+Received data: b
+Received data at: 12:37:39.965820
+DEBUG:root:Connection from: ('127.0.0.1', 58554)
 Execution time: 0.00 seconds 
 Received data:  
-Received data at: 23:48:32.288198
-DEBUG:root:Execution time: 6.21 seconds 
-Received data: a
-Received data at: 23:48:38.493125
-DEBUG:root:Execution time: 4.40 seconds 
-Received data: a
-Received data at: 23:48:42.894335
-DEBUG:root:Connection from: ('127.0.0.1', 52844)
+Received data at: 13:11:02.259059
+DEBUG:root:Execution time: 0.06 seconds 
+Received data: 12;0;1;28;0;17;4;0;
+Received data at: 13:11:29.592111
+DEBUG:root:Execution time: 0.05 seconds 
+Received data: b
+Received data at: 13:11:43.451622
+DEBUG:root:Connection from: ('127.0.0.1', 58224)
 Execution time: 0.00 seconds 
 Received data:  
-Received data at: 15:51:26.920504
-DEBUG:root:Execution time: 6.24 seconds 
-Received data: a
-Received data at: 15:51:33.160903
-DEBUG:root:Execution time: 17.00 seconds 
-Received data: a
-Received data at: 15:51:50.161207
+Received data at: 13:14:21.630395
+DEBUG:root:Execution time: 0.06 seconds 
+Received data: 12;0;1;28;0;17;4;0;
+Received data at: 13:14:33.386827
+DEBUG:root:Execution time: 0.05 seconds 
+Received data: b
+Received data at: 13:14:48.559166
+DEBUG:root:Connection from: ('127.0.0.1', 50912)
+Execution time: 0.00 seconds 
+Received data:  
+Received data at: 13:16:22.492692
+DEBUG:root:Execution time: 0.06 seconds 
+Received data: 12;0;1;28;0;17;4;0;
+Received data at: 13:16:36.287279
+DEBUG:root:Execution time: 0.05 seconds 
+Received data: b
+Received data at: 13:16:54.547869
+DEBUG:root:Connection from: ('127.0.0.1', 44820)
+Execution time: 0.00 seconds 
+Received data:  
+Received data at: 13:19:30.979231
+DEBUG:root:Execution time: 0.09 seconds 
+Received data: 12;0;1;28;0;17;4;0;
+Received data at: 13:19:35.794313
+DEBUG:root:Execution time: 0.05 seconds 
+Received data: b
+Received data at: 13:20:02.807638
+DEBUG:root:Connection from: ('127.0.0.1', 42516)
+Execution time: 0.00 seconds 
+Received data:  
+Received data at: 13:35:02.678416
+DEBUG:root:Execution time: 0.18 seconds 
+Received data: 12;0;1;28;0;17;4;0;
+Received data at: 13:35:28.000702
+DEBUG:root:Execution time: 0.06 seconds 
+Received data: d
+Received data at: 13:35:45.240848
+DEBUG:root:Connection from: ('127.0.0.1', 56374)
+Execution time: 0.00 seconds 
+Received data:  
+Received data at: 13:37:17.488251
+DEBUG:root:Execution time: 0.07 seconds 
+Received data: 12;0;1;28;0;17;4;0;
+Received data at: 13:37:25.646281
+DEBUG:root:Execution time: 0.05 seconds 
+Received data: d
+Received data at: 13:37:34.408575
+DEBUG:root:Connection from: ('127.0.0.1', 50406)
+Execution time: 0.00 seconds 
+Received data:  
+Received data at: 13:39:12.100383
+DEBUG:root:Execution time: 0.09 seconds 
+Received data: 12;0;1;28;0;17;4;0;
+Received data at: 13:39:15.664942
+DEBUG:root:Execution time: 0.05 seconds 
+Received data: d
+Received data at: 13:39:38.550699

@@ -22,7 +22,7 @@ class Server:
         self.PORT: int = 1234
         self.response: str = ""
         self.REREAD_ON_QUERY: bool = False
-        self.SSL_AUTHENTICATION: bool = True
+        self.SSL_AUTHENTICATION: bool = False
         self.PSK: str = "my_secret_psk"
         self.execution_time: float = 0
 
@@ -38,58 +38,108 @@ class Server:
         :return: None
         :rtype: None
         """
-        while True:
-            # Capture the start time
-            start_time = time.time()
+        try:
+            while True:
+                if self.SSL_AUTHENTICATION:
+                    # Wrap the socket with SSL using PSK
+                    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+                    context.psk_server_callback = lambda identity: self.PSK.encode("utf-8")
+                    context.set_ciphers('PSK-AES128-CBC-SHA')
+                    client_socket = context.wrap_socket(client_socket, server_side=True)
 
-            # Receive the data of max payload of 1024 from the client
-            client_string = client_socket.recv(1024)
-            self.data = client_string.rstrip(b'\x00').decode("utf-8")
+                # Receive the data of max payload of 1024 from the client
+                client_string = client_socket.recv(1024)
+                self.data = client_string.rstrip(b'\x00').decode("utf-8")
 
-            # Re-reads file if REREAD_ON_QUERY is set to True else just reads once
-            while self.REREAD_ON_QUERY:
-                # Get file path of the txt file
-                config_file = find_file.search_file("config_file.conf")
-                file_path_from_config = config_parser.extract_linux_path(config_file)
+                # Re-reads file if REREAD_ON_QUERY is set to True else just reads once
+                while self.REREAD_ON_QUERY:
+                    try:
+                        # Capture the start time
+                        start_time = time.time()
+                        #to be used when file paths are not known
+                        # # Get file path of the txt file
+                        # config_file = find_file.search_file("config_file.conf")
+                        # file_path_from_config = config_parser.extract_linux_path(config_file)
 
-                # File name of the txt file
-                file_name = os.path.basename(file_path_from_config)
+                        # # File name of the txt file
+                        # file_name = os.path.basename(file_path_from_config)
 
-                # Full path of the txt file
-                file_path = find_file.search_file(file_name)
+                        # # Full path of the txt file
+                        # file_path = find_file.search_file(file_name)
 
-                # Send a response back to the client
-                if file_searcher.linear_search_string(file_path, self.data):
-                    response = "STRING EXISTS \n"
+                        config_file = "/home/grrhrwh/Documents/GitHub/-Introductory-Task-for-Software-Engineers-at-Algorithmic-Sciences/env/config_file.conf"
+                        file_path_from_config = config_parser.extract_linux_path(config_file)
+                        file_path = file_path_from_config
+                        # Send a response back to the client
+                        if file_searcher.binary_search_string(file_path, self.data):
+                            response = "STRING EXISTS \n"
+                        else:
+                            response = "STRING NOT FOUND \n"
+
+                        client_socket.send(response.encode("utf-8"))
+
+                        end_time = time.time()
+                    except FileNotFoundError:
+                        response = "Config file not found \n"
+                        client_socket.send(response.encode("utf-8"))
+                        break
+
+                    except Exception as e:
+                        response = "An error occurred during file search or parsing: {}\n".format(str(e))
+                        client_socket.send(response.encode("utf-8"))
+                        break
+
                 else:
-                    response = "STRING NOT FOUND \n"
+                    try:
+                        # to use when the paths are not given
+                        # # Get file path of the txt file
+                        # config_file = find_file.search_file("config_file.conf")
+                        # file_path_from_config = config_parser.extract_linux_path(config_file)
 
-                client_socket.send(response.encode("utf-8"))
+                        # # File name of the txt file
+                        # file_name = os.path.basename(file_path_from_config)
 
-            else:
-                # Get file path of the txt file
-                config_file = find_file.search_file("config_file.conf")
-                file_path_from_config = config_parser.extract_linux_path(config_file)
+                        # # Full path of the txt file
+                        # file_path = find_file.search_file(file_name)
 
-                # File name of the txt file
-                file_name = os.path.basename(file_path_from_config)
+                        # Capture the start time
+                        start_time = time.time()
+                        config_file = "/home/grrhrwh/Documents/GitHub/-Introductory-Task-for-Software-Engineers-at-Algorithmic-Sciences/env/config_file.conf"
+                        file_path_from_config = config_parser.extract_linux_path(config_file)
+                        file_path = file_path_from_config
+                        # Send a response back to the client
+                        if file_searcher.naive_string_search(file_path, self.data):
+                            response = "STRING EXISTS \n"
+                        else:
+                            response = "STRING NOT FOUND \n"
 
-                # Full path of the txt file
-                file_path = find_file.search_file(file_name)
+                        client_socket.send(response.encode("utf-8"))
+                        end_time = time.time()
+                    except FileNotFoundError:
+                        response = "Config file not found \n"
+                        client_socket.send(response.encode("utf-8"))
 
-                # Send a response back to the client
-                if file_searcher.linear_search_string(file_path, self.data):
-                    response = "STRING EXISTS \n"
-                else:
-                    response = "STRING NOT FOUND \n"
+                    except Exception as e:
+                        response = "An error occurred during file search or parsing: {}\n".format(str(e))
+                        client_socket.send(response.encode("utf-8"))
 
-                client_socket.send(response.encode("utf-8"))
+                end_time = time.time()
+                self.execution_time = end_time - start_time
 
-            end_time = time.time()
-            self.execution_time = end_time - start_time
+                logging.debug("Execution time: {:.2f} seconds \nReceived data: {}\nReceived data at: {}".format(
+                    self.execution_time, self.data, datetime.now().time()))
 
-            logging.debug("Execution time: {:.2f} seconds \nReceived data: {}\nReceived data at: {}".format(
-                self.execution_time, self.data, datetime.now().time()))
+        except ConnectionError as ce:
+            response = "Connection error occurred: {}\n".format(str(ce))
+            client_socket.send(response.encode("utf-8"))
+
+        except ssl.SSLError as ssl_error:
+            response = "SSL error occurred during handshake: {}\n".format(str(ssl_error))
+            client_socket.send(response.encode("utf-8"))
+
+        except BrokenPipeError as e:
+            response = "Broken pipe error:: {}\n".format(str(e))
+            client_socket.send(response.encode("utf-8"))
 
     def start_server(self) -> None:
         """
@@ -98,37 +148,18 @@ class Server:
         :return: None
         :rtype: None
         """
-        # Create a TCP socket
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            # Create a TCP socket
+            server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        # Bind the socket to the host and port
-        server_socket.bind((self.HOST, self.PORT))
+            # Bind the socket to the host and port
+            server_socket.bind((self.HOST, self.PORT))
 
-        # Listen for incoming connections
-        server_socket.listen(0)
-        print("Server listening on {}:{}".format(self.HOST, self.PORT))
+            # Listen for incoming connections
+            server_socket.listen(0)
+            print("Server listening on {}:{}".format(self.HOST, self.PORT))
 
-        while True:
-            while self.SSL_AUTHENTICATION:
-                # Accept a client connection
-                client_socket, client_address = server_socket.accept()
-
-                # Wrap the socket with SSL
-                ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-                ssl_context.load_cert_chain(certfile="server.crt", keyfile="server.key")
-                ssl_context.load_psk_identity(identity=self.PSK, psk=self.PSK)
-                ssl_socket = ssl_context.wrap_socket(client_socket, server_side=True)
-
-                # Handle each connection in a separate thread
-                thread = threading.Thread(target=self.handle_connection, args=(ssl_socket,))
-                thread.start()
-
-                logging.debug("Connection from: {}\nExecution time: {:.2f} seconds \nReceived data: {} \nReceived data at: {}".format(
-                    client_address, self.execution_time, self.data, datetime.now().time()))
-
-
-
-            else:
+            while True:
                 # Accept a client connection
                 client_socket, client_address = server_socket.accept()
 
@@ -139,7 +170,16 @@ class Server:
                 logging.debug("Connection from: {}\nExecution time: {:.2f} seconds \nReceived data: {} \nReceived data at: {}".format(
                     client_address, self.execution_time, self.data, datetime.now().time()))
 
+        except OSError as os_error:
+            response = "OS error occurred during socket operations: {}\n".format(str(os_error))
+            print(response)
+
+        except Exception as e:
+            response = "An error occurred during server startup or listening: {}\n".format(str(e))
+            print(response)
+
 
 if __name__ == "__main__":
     obj = Server()
     obj.start_server()
+
