@@ -33,10 +33,18 @@ class Server:
         """
         Handles the connection with a client.
 
-        :param client_socket: The socket object for the client connection.
-        :type client_socket: socket.socket
-        :return: None
-        :rtype: None
+        Args:
+            client_socket(socket.socket): The socket object for the client connection.
+        
+        return:
+            None
+
+        raise:
+            FileNotFoundErro: if an file path error occurs
+            Exception: any other error occurse
+            ConnectionError: if a server connection error occurs
+            ssl.SSLError: if an error with ssl authentication occurs
+            BrokenPipeErro: if the connection is interupted
         """
         try:
             while True:
@@ -145,8 +153,13 @@ class Server:
         """
         Starts the server and listens for incoming connections.
 
-        :return: None
-        :rtype: None
+        return: 
+            None
+
+        rise:
+            OSError: if an os error occurs
+            Exception: any other error occurs 
+
         """
         try:
             # Create a TCP socket

@@ -6,10 +6,12 @@ def extract_linux_path(file_path: str) -> Optional[str]:
 
     The function searches through the config file for the line starting with "linuxpath=".
 
-    :param file_path: Path to the configuration file.
-    :type file_path: str
+    :file_path: str
+      Path to the configuration file.
+
     :return: The Linux path if found, None otherwise.
     :rtype: Optional[str]
+
     :raises: FileNotFoundError if the configuration file is not found.
     :raises: ValueError if the path is not found in the configuration file.
     """

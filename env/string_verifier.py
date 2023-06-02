@@ -2,10 +2,19 @@ def validate_string(input_string: str) -> tuple[bool, str]:
     """
     Validates the input string and returns a tuple indicating whether the string is valid and an accompanying message.
 
-    :param input_string: The string to be validated.
-    :type input_string: str
-    :return: A tuple containing a boolean indicating if the string is valid and a message describing the result.
-    :rtype: tuple[bool, str]
+    Args
+        input_string(str): The string to be validated.
+
+    return: 
+        tuple[bool, str]:A tuple containing a boolean indicating if the string is valid and a message describing the result.
+    
+    raise:
+        ValueError: if there is a value error
+        TypeError: if input sting is of the wrong type
+        SyntaxError: if the input has the syntax
+        UnicodeError: if there is an encoding error
+        OverflowError: in case of an overflow
+        MemoryError: in case of a memory error
     """
     try:
         # Check if the input is already a string

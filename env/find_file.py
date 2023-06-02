@@ -9,10 +9,11 @@ def search_file(filename: str) -> Optional[str]:
     The function traverses the file system starting from the root directory ("/")
     and searches for the given filename in the files.
 
-    :param filename: The name of the file to search for.
-    :type filename: str
-    :return: The path of the file if found, None otherwise.
-    :rtype: Optional[str]
+    Args:
+        filename(str): The name of the file to search for.
+
+    return:
+        Optional[str]: The path of the file if found, None otherwise.
     """
     for root, dirs, files in os.walk("/"):
         if filename in files:

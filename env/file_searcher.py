@@ -4,12 +4,17 @@ def linear_search_string(file_path: str, search_string: str) -> bool:
     """
     Performs a linear search for the given search string in the file.
 
-    :param file_path: The path to the file to be searched.
-    :type file_path: str
-    :param search_string: The string to search for.
-    :type search_string: str
-    :return: True if the search string is found in the file, False otherwise.
-    :rtype: bool
+    Args
+        file_path(str): The path to the file to be searched.
+        search_string(str): The string to search for.
+  
+    return:
+        bool:True if the search string is found in the file, False otherwise.
+
+    raises:
+        FileNotFoundError: if file path not found
+        IoErroe: if error is found while reading  file
+
     """
     try:
         with open(file_path, 'r') as file:
@@ -21,11 +26,28 @@ def linear_search_string(file_path: str, search_string: str) -> bool:
         print(f"File '{file_path}' not found.")
     except IOError:
         print(f"Error reading file '{file_path}'.")
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
 
 
-def naive_string_search(file_path, search_string):
+
+from typing import List, Tuple
+import mmap
+
+
+def naive_string_search(file_path: str, search_string: str) -> List[Tuple[int, str]]:
+    """
+    Perform a naive string search in a file.
+
+    Args:
+        file_path (str): The path to the file to be searched.
+        search_string (str): The string to search for.
+
+    Returns:
+        List[Tuple[int, str]]: A list of tuples containing the line number and matching line text.
+
+    Raises:
+        FileNotFoundError: If the file specified by `file_path` does not exist.
+        Exception: If an error occurs while performing the search.
+    """
     try:
         with open(file_path, 'r') as file:
             line_number = 1
@@ -40,12 +62,27 @@ def naive_string_search(file_path, search_string):
             return matches
     
     except FileNotFoundError:
-        print("File not found:", file_path)
+        raise FileNotFoundError("File not found: {}".format(file_path))
     
     except Exception as e:
-        print("An error occurred:", str(e))
+        raise Exception("An error occurred: {}".format(str(e)))
 
-def boyer_moore_search(file_path, search_string):
+
+def boyer_moore_search(file_path: str, search_string: str) -> bool:
+    """
+    Perform a Boyer-Moore string search in a file.
+
+    Args:
+        file_path (str): The path to the file to be searched.
+        search_string (str): The string to search for.
+
+    Returns:
+        bool: True if the search string is found, False otherwise.
+
+    Raises:
+        FileNotFoundError: If the file specified by `file_path` does not exist.
+        Exception: If an error occurs while performing the search.
+    """
     try:
         with open(file_path, 'r') as file:
             pattern_length = len(search_string)
@@ -73,12 +110,27 @@ def boyer_moore_search(file_path, search_string):
             return False  # Match not found
     
     except FileNotFoundError:
-        print("File not found:", file_path)
+        raise FileNotFoundError("File not found: {}".format(file_path))
     
     except Exception as e:
-        print("An error occurred:", str(e))
+        raise Exception("An error occurred: {}".format(str(e)))
 
-def mmap_search(file_path, search_string):
+
+def mmap_search(file_path: str, search_string: str) -> bool:
+    """
+    Perform an mmap string search in a file.
+
+    Args:
+        file_path (str): The path to the file to be searched.
+        search_string (str): The string to search for.
+
+    Returns:
+        bool: True if the search string is found, False otherwise.
+
+    Raises:
+        FileNotFoundError: If the file specified by `file_path` does not exist.
+        Exception: If an error occurs while performing the search.
+    """
     try:
         with open(file_path, "r") as file:
             # Memory map the file
@@ -89,12 +141,27 @@ def mmap_search(file_path, search_string):
             return False  # Match not found
     
     except FileNotFoundError:
-        print("File not found:", file_path)
+        raise FileNotFoundError("File not found: {}".format(file_path))
     
     except Exception as e:
-        print("An error occurred:", str(e))
+        raise Exception("An error occurred: {}".format(str(e)))
 
-def rabin_karp_search(file_path, search_string):
+
+def rabin_karp_search(file_path: str, search_string: str) -> bool:
+    """
+    Perform a Rabin-Karp string search in a file.
+
+    Args:
+        file_path (str): The path to the file to be searched.
+        search_string (str): The string to search for.
+
+    Returns:
+        bool: True if the search string is found, False otherwise.
+
+    Raises:
+        FileNotFoundError: If the file specified by `file_path` does not exist.
+        Exception: If an error occurs while performing the search.
+    """
     try:
         with open(file_path, 'r') as file:
             pattern_length = len(search_string)
@@ -120,12 +187,27 @@ def rabin_karp_search(file_path, search_string):
             return False  # Match not found
     
     except FileNotFoundError:
-        print("File not found:", file_path)
+        raise FileNotFoundError("File not found: {}".format(file_path))
     
     except Exception as e:
-        print("An error occurred:", str(e))
+        raise Exception("An error occurred: {}".format(str(e)))
 
-def kmp_search(file_path, search_string):
+
+def kmp_search(file_path: str, search_string: str) -> bool:
+    """
+    Perform a Knuth-Morris-Pratt (KMP) string search in a file.
+
+    Args:
+        file_path (str): The path to the file to be searched.
+        search_string (str): The string to search for.
+
+    Returns:
+        bool: True if the search string is found, False otherwise.
+
+    Raises:
+        FileNotFoundError: If the file specified by `file_path` does not exist.
+        Exception: If an error occurs while performing the search.
+    """
     try:
         with open(file_path, 'r') as file:
             pattern_length = len(search_string)
@@ -165,12 +247,27 @@ def kmp_search(file_path, search_string):
             return False  # Match not found
     
     except FileNotFoundError:
-        print("File not found:", file_path)
+        raise FileNotFoundError("File not found: {}".format(file_path))
     
     except Exception as e:
-        print("An error occurred:", str(e))
+        raise Exception("An error occurred: {}".format(str(e)))
 
-def bitap_search(file_path, search_string):
+
+def bitap_search(file_path: str, search_string: str) -> bool:
+    """
+    Perform a Bitap (Shift-Or) string search in a file.
+
+    Args:
+        file_path (str): The path to the file to be searched.
+        search_string (str): The string to search for.
+
+    Returns:
+        bool: True if the search string is found, False otherwise.
+
+    Raises:
+        FileNotFoundError: If the file specified by `file_path` does not exist.
+        Exception: If an error occurs while performing the search.
+    """
     try:
         with open(file_path, 'r') as file:
             pattern_length = len(search_string)
@@ -199,12 +296,27 @@ def bitap_search(file_path, search_string):
             return False  # Match not found
 
     except FileNotFoundError:
-        print("File not found:", file_path)
+        raise FileNotFoundError("File not found: {}".format(file_path))
 
     except Exception as e:
-        print("An error occurred:", str(e))
+        raise Exception("An error occurred: {}".format(str(e)))
 
-def binary_search_string(file_path, search_string):
+
+def binary_search_string(file_path: str, search_string: str) -> bool:
+    """
+    Perform a binary search for a string in a file.
+
+    Args:
+        file_path (str): The path to the file to be searched.
+        search_string (str): The string to search for.
+
+    Returns:
+        bool: True if the search string is found, False otherwise.
+
+    Raises:
+        FileNotFoundError: If the file specified by `file_path` does not exist.
+        Exception: If an error occurs while performing the search.
+    """
     try:
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -228,7 +340,7 @@ def binary_search_string(file_path, search_string):
             return False  # Match not found
 
     except FileNotFoundError:
-        print("File not found:", file_path)
+        raise FileNotFoundError("File not found: {}".format(file_path))
 
     except Exception as e:
-        print("An error occurred:", str(e))
+        raise Exception("An error occurred: {}".format(str(e)))

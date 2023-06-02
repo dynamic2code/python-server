@@ -14,6 +14,9 @@ class Client:
         """
         Prompts the user to enter a search string and validates it.
 
+        :client_input: str
+                        the user input
+
         :return: The validated search string.
         :rtype: str
         """
@@ -32,8 +35,16 @@ class Client:
         This function communicates with the server by sending the search string
         and receiving the response.
 
+        :client_socket: Tcp socket 
+        :string: Str
+                 returned form the method geting user input
+        :response: response form the server
+
         :return: None
         :rtype: None
+
+        :raises:ConnectionRefusedError if the connection is refused
+        :raises:ConnectionResetError if the connection is reset
         """
         # Create a TCP socket
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -50,21 +61,21 @@ class Client:
                 client_socket = context.wrap_socket(client_socket, server_hostname=server_hostname)
 
 
-            # Connect to the server
+            # Connection with the server
             client_socket.connect((self.host, self.port))
             print("Enter 'exit' to close the connection.")
 
             while True:
                 string = self.get_search_string()
 
-                # Send the message to the server
+                # Sending  the message to the server
                 client_socket.send(string.encode("utf-8"))
 
-                # Receive the response from the server
+                # Receiveing the response from the server
                 response = client_socket.recv(1024).decode("utf-8")
                 print("Response from server:", response)
 
-                # Check if the user wants to exit
+                # option to exit
                 if string.lower() == "exit":
                     break
 
@@ -75,7 +86,7 @@ class Client:
             print("Connection reset by the server.")
 
         finally:
-            # Close the socket
+            # Closing the connection with server
             client_socket.close()
 
 if __name__ == "__main__":
