@@ -45,6 +45,8 @@ class Server:
             ConnectionError: if a server connection error occurs
             ssl.SSLError: if an error with ssl authentication occurs
             BrokenPipeErro: if the connection is interupted
+
+        the function is called by another function
         """
         try:
             while True:
@@ -160,6 +162,9 @@ class Server:
             OSError: if an os error occurs
             Exception: any other error occurs 
 
+        Example:
+            >>> server = Server()
+            >>> server.start_server()
         """
         try:
             # Create a TCP socket

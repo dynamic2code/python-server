@@ -14,11 +14,18 @@ class Client:
         """
         Prompts the user to enter a search string and validates it.
 
-        :client_input: str
-                        the user input
+        client_input(str):
+            the user input
 
-        :return: The validated search string.
-        :rtype: str
+        return(str):
+            The validated search string.
+
+        Example:
+            >>> client = Client()
+            >>> client.get_search_string()
+            Enter the string you wish to search: 12;0;1;28;0;17;4;0;
+            '12;0;1;28;0;17;4;0;'
+        
         """
         while True:
             client_input = input("Enter the string you wish to search: ")
@@ -35,16 +42,24 @@ class Client:
         This function communicates with the server by sending the search string
         and receiving the response.
 
-        :client_socket: Tcp socket 
-        :string: Str
-                 returned form the method geting user input
-        :response: response form the server
+        Args:
+            client_socket: Tcp socket 
+            string(str):returned form the method geting user input
+            response: response form the server
 
-        :return: None
-        :rtype: None
+        return:
+            None: None
 
-        :raises:ConnectionRefusedError if the connection is refused
-        :raises:ConnectionResetError if the connection is reset
+        raises:
+            ConnectionRefusedError if the connection is refused
+            ConnectionResetError if the connection is reset
+        
+        Example:
+            >>> client = Client()
+            >>> client.send_message()
+            Enter the string you wish to search: 12;0;1;28;0;17;4;0;
+            Response from server: STRING FOUND.
+            Enter the string you wish to search: exit
         """
         # Create a TCP socket
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

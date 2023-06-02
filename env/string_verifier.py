@@ -15,6 +15,13 @@ def validate_string(input_string: str) -> tuple[bool, str]:
         UnicodeError: if there is an encoding error
         OverflowError: in case of an overflow
         MemoryError: in case of a memory error
+
+    Example:
+        >>> validate_string("Hello, world!")
+        (True, "Input string is valid.")
+
+        >>> validate_string(123)
+        (False, "TypeError: Input is not a string.")
     """
     try:
         # Check if the input is already a string

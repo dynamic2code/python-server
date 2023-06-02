@@ -14,6 +14,13 @@ def search_file(filename: str) -> Optional[str]:
 
     return:
         Optional[str]: The path of the file if found, None otherwise.
+
+    Example:
+        >>> search_file("file.txt")
+        '/path/to/file.txt'
+
+        >>> search_file("image.jpg")
+        None
     """
     for root, dirs, files in os.walk("/"):
         if filename in files:
