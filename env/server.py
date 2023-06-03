@@ -64,22 +64,12 @@ class Server:
                 # Re-reads file if REREAD_ON_QUERY is set to True else just reads once
                 while self.REREAD_ON_QUERY:
                     try:
+                        # get path to cinfig file without hardcording 
+                        config_file = find_file.search_file("config_file.conf")                        
+                        
+                        file_path = config_parser.extract_linux_path(config_file)
                         # Capture the start time
                         start_time = time.time()
-                        #to be used when file paths are not known
-                        # # Get file path of the txt file
-                        # config_file = find_file.search_file("config_file.conf")
-                        # file_path_from_config = config_parser.extract_linux_path(config_file)
-
-                        # # File name of the txt file
-                        # file_name = os.path.basename(file_path_from_config)
-
-                        # # Full path of the txt file
-                        # file_path = find_file.search_file(file_name)
-
-                        config_file = "/home/grrhrwh/Documents/GitHub/-Introductory-Task-for-Software-Engineers-at-Algorithmic-Sciences/env/config_file.conf"
-                        file_path_from_config = config_parser.extract_linux_path(config_file)
-                        file_path = file_path_from_config
                         # Send a response back to the client
                         if file_searcher.binary_search_string(file_path, self.data):
                             response = "STRING EXISTS \n"
@@ -89,6 +79,7 @@ class Server:
                         client_socket.send(response.encode("utf-8"))
 
                         end_time = time.time()
+
                     except FileNotFoundError:
                         response = "Config file not found \n"
                         client_socket.send(response.encode("utf-8"))
@@ -101,22 +92,11 @@ class Server:
 
                 else:
                     try:
-                        # to use when the paths are not given
-                        # # Get file path of the txt file
-                        # config_file = find_file.search_file("config_file.conf")
-                        # file_path_from_config = config_parser.extract_linux_path(config_file)
-
-                        # # File name of the txt file
-                        # file_name = os.path.basename(file_path_from_config)
-
-                        # # Full path of the txt file
-                        # file_path = find_file.search_file(file_name)
-
-                        # Capture the start time
+                        # get path to cinfig file without hardcording 
+                        config_file = find_file.search_file("config_file.conf")                        
+                        
+                        file_path = config_parser.extract_linux_path(config_file)
                         start_time = time.time()
-                        config_file = "/home/grrhrwh/Documents/GitHub/-Introductory-Task-for-Software-Engineers-at-Algorithmic-Sciences/env/config_file.conf"
-                        file_path_from_config = config_parser.extract_linux_path(config_file)
-                        file_path = file_path_from_config
                         # Send a response back to the client
                         if file_searcher.naive_string_search(file_path, self.data):
                             response = "STRING EXISTS \n"
