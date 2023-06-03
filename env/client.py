@@ -5,8 +5,8 @@ import string_verifier
 
 class Client:
     def __init__(self):
-        self.host: str = "127.0.0.1"
-        self.port: int = 1234
+        self.host: str = "localhost"
+        self.port: int = 2000
         self.SSL_AUTHENTICATION: bool = False
         self.PSK: str = "my_secret_psk"
 

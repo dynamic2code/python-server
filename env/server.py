@@ -18,8 +18,8 @@ class Server:
 
         """
         self.data: str = ""
-        self.HOST: str = "127.0.0.1"
-        self.PORT: int = 1234
+        self.HOST: str = "localhost"
+        self.PORT: int = 2000
         self.response: str = ""
         self.REREAD_ON_QUERY: bool = False
         self.SSL_AUTHENTICATION: bool = False
