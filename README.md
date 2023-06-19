@@ -1,3 +1,1 @@
-The Standardized Introductory Task for Software Engineers at Algorithmic Sciences.
-
-activate the environment with source env/bin/activate before running the server
+A project that creates a server that connects to a client to search for files in multiple files. The client caan be used as a linux demon by following the instructions
